@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyStream Weather</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-clear">
+
+<!-- Background overlay -->
+<div class="bg-overlay"></div>
+
+<!-- Topbar -->
+<div class="topbar">
+    <div class="brand">SkyStream</div>
+    <div class="top-actions">
+        <button id="unitBtn" class="btn ghost">°C</button>
+        <button id="saveLocBtn" class="btn ghost">♡ Favorite</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+
+        <!-- LEFT: SEARCH -->
+        <div class="glass-card left-card">
+            <h2>Search Location</h2>
+
+     <div class="search-form search-wrapper">
+    <input id="cityInput" type="text" placeholder="Enter city name...">
+    <button id="searchBtn" class="btn">Search</button>
+
+    <!-- Autocomplete dropdown -->
+    <div id="autocompleteBox" class="autocomplete-box"></div>
+</div>
+
+
+
+
+            <!-- Stream card -->
+            <div class="glass-card stream-card">
+                <div id="defaultCity">—</div>
+            </div>
+        </div>
+
+        <!-- RIGHT: BIG WEATHER INFO -->
+        <div class="glass-card right-card">
+            <div id="locationDisplay" class="big-location">—</div>
+
+            <div class="temp-row">
+                <div class="big-temp" id="bigTemp">--°</div>
+                <img id="bigIcon" class="big-icon" src="" alt="">
+            </div>
+
+            <div id="bigCond" class="cond">---</div>
+
+            <div class="meta">
+                <div class="meta-item">Humidity: <span id="metaHum">--%</span></div>
+                <div class="meta-item">Wind: <span id="metaWind">-- km/h</span></div>
+            </div>
+
+            <div class="sun-card glass-card">
+    <div class="sun-row">
+        <span>Sunrise: <span id="sunriseTime">--</span></span>
+
+        <div class="sun-track">
+    <img id="sunIcon" src="/icons/sun.png" alt="Sun icon" />
+    <label for="sunProgress" class="visually-hidden">Sun progress</label>
+    <input type="range" id="sunProgress" min="0" max="100" value="0" disabled title="Sun progress" />
+</div>
+
+
+        <span>Sunset: <span id="sunsetTime">--</span></span>
+    </div>
+</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- HOURLY FORECAST -->
+    <div class="glass-card hourly-section">
+        <h3>Hourly Forecast</h3>
+        <div id="hourlySlider" class="hourly-slider"></div>
+    </div>
+
+    <!-- WEEKLY FORECAST -->
+    <div class="glass-card forecast-section">
+        <h3>7-DaysS Forecast</h3>
+        <div id="weekList" class="week-list"></div>
+    </div>
+
+</div>
+
+<div class="airquality-card glass-card">
+    <div class="aqi-title" id="aqiCategory">Air Quality</div>
+    <div class="aqi-value" id="aqiValue"></div>
+
+    <div class="aqi-bar">
+        <div class="aqi-fill" id="aqiFill"></div>
+        <div class="aqi-pointer" id="aqiPointer"></div>
+    </div>
+
+    <p id="aqiMessage" class="aqi-message"></p>
+</div>
+
+<div class="lifestyle-card glass-box">
+    <h3>Lifestyle Tips</h3>
+
+    <!-- IMPORTANT: Add lifestyle-grid class here -->
+    <div id="tipsContainer" class="lifestyle-grid"></div>
+</div>
+
+
+<script src="app.js"></script>
+</body>
+</html>

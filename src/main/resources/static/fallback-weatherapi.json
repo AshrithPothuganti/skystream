@@ -1,0 +1,45 @@
+{
+  "location": {
+    "name": "Hyderabad",
+    "region": "Telangana",
+    "country": "India",
+    "localtime": "2025-12-04 09:00"
+  },
+  "current": {
+    "temp_c": 24,
+    "temp_f": 75.2,
+    "condition": { "text": "Partly cloudy", "icon": "" },
+    "wind_kph": 6,
+    "humidity": 58,
+    "feelslike_c": 25,
+    "pressure_mb": 1012,
+    "vis_km": 6,
+    "air_quality": {
+      "pm2_5": 52,
+      "pm10": 80,
+      "us-epa-index": 2
+    }
+  },
+  "forecast": {
+    "forecastday": [
+      {
+        "date": "2025-12-04",
+        "day": {
+          "maxtemp_c": 29,
+          "mintemp_c": 19,
+          "avgtemp_c": 23,
+          "condition": { "text": "Sunny", "icon": "" }
+        },
+        "astro": {
+          "sunrise": "06:39 AM",
+          "sunset": "17:12 PM"
+        },
+        "hour": [
+          { "time": "2025-12-04 01:00", "temp_c": 18, "condition": { "text": "Cloudy" } },
+          { "time": "2025-12-04 02:00", "temp_c": 19, "condition": { "text": "Cloudy" } },
+          { "time": "2025-12-04 03:00", "temp_c": 20, "condition": { "text": "Cloudy" } }
+        ]
+      }
+    ]
+  }
+}

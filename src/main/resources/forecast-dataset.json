@@ -1,0 +1,11 @@
+{
+  "Delhi": [
+    { "date": "2025-12-01", "condition": "Sunny", "max": 26, "min": 12 },
+    { "date": "2025-12-02", "condition": "Cloudy", "max": 24, "min": 11 },
+    { "date": "2025-12-03", "condition": "Rain", "max": 22, "min": 10 },
+    { "date": "2025-12-04", "condition": "Clear", "max": 23, "min": 9 },
+    { "date": "2025-12-05", "condition": "Haze", "max": 25, "min": 10 },
+    { "date": "2025-12-06", "condition": "Sunny", "max": 27, "min": 11 },
+    { "date": "2025-12-07", "condition": "Cloudy", "max": 24, "min": 12 }
+  ]
+}
