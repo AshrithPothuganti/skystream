@@ -23,16 +23,27 @@ public class LocalCSVLoaderService {
     private final List<Map<String, String>> globalData = new ArrayList<>();
     private final List<Map<String, String>> dailyData = new ArrayList<>();
 
-    private static final int MAX_ROWS = 1000;
+    private volatile boolean loaded = false;
 
     @PostConstruct
     public void init() {
-        System.out.println("CSV loader initialized (lazy mode)");
+        System.out.println("LocalCSVLoaderService initialized (lazy mode)");
+    }
+
+    private synchronized void ensureLoaded() {
+        if (loaded) return;
+
+        loadCsv(globalPath, globalData, "Global", 5000);
+        loadCsv(dailyPath, dailyData, "Daily", 5000);
+
+        loaded = true;
+        System.out.println("CSV fallback datasets loaded");
     }
 
     private void loadCsv(String path,
                          List<Map<String, String>> target,
-                         String label) {
+                         String label,
+                         int maxRows) {
 
         try {
             Resource resource = new ClassPathResource(path);
@@ -53,14 +64,12 @@ public class LocalCSVLoaderService {
                 String line;
                 int count = 0;
 
-                while ((line = br.readLine()) != null) {
-                    if (count >= MAX_ROWS) break;
-
+                while ((line = br.readLine()) != null && count < maxRows) {
                     String[] values = line.split(",", -1);
                     Map<String, String> row = new HashMap<>();
 
                     for (int i = 0; i < Math.min(headers.length, values.length); i++) {
-                        row.put(headers[i].trim(), values[i].trim());
+                        row.put(headers[i].trim().toLowerCase(), values[i].trim());
                     }
 
                     target.add(row);
@@ -76,16 +85,12 @@ public class LocalCSVLoaderService {
     }
 
     public List<Map<String, String>> getGlobalData() {
-        if (globalData.isEmpty()) {
-            loadCsv(globalPath, globalData, "Global");
-        }
+        ensureLoaded();
         return globalData;
     }
 
     public List<Map<String, String>> getDailyData() {
-        if (dailyData.isEmpty()) {
-            loadCsv(dailyPath, dailyData, "Daily");
-        }
+        ensureLoaded();
         return dailyData;
     }
 }
