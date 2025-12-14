@@ -68,12 +68,15 @@
     <div class="sun-row">
         <span>Sunrise: <span id="sunriseTime">--</span></span>
 
-        <div class="sun-track">
-    <img id="sunIcon" src="/icons/sun.png" alt="Sun icon" />
-    <label for="sunProgress" class="visually-hidden">Sun progress</label>
-    <input type="range" id="sunProgress" min="0" max="100" value="0" disabled title="Sun progress" />
-</div>
+     <div class="sun-track">
+    <div class="sun-bar">
+        <div class="sun-fill" id="sunFill"></div>
+        <div class="moon-fill" id="moonFill"></div>
+    </div>
+   <img id="sunIcon" src="/icons/sunny.png" alt="Sun icon" />
+   <img id="moonIcon" src="/icons/moon.png" alt="Moon icon" />
 
+</div>
 
         <span>Sunset: <span id="sunsetTime">--</span></span>
     </div>
@@ -84,13 +87,14 @@
         </div>
 
     </div>
+    
 
     <!-- HOURLY FORECAST -->
     <div class="glass-card hourly-section">
         <h3>Hourly Forecast</h3>
         <div id="hourlySlider" class="hourly-slider"></div>
     </div>
-
+<hr>
     <!-- WEEKLY FORECAST -->
     <div class="glass-card forecast-section">
         <h3>7-DaysS Forecast</h3>
@@ -98,7 +102,7 @@
     </div>
 
 </div>
-
+<!-- AIR QUALITY & LIFESTYLE TIPS -->
 <div class="airquality-card glass-card">
     <div class="aqi-title" id="aqiCategory">Air Quality</div>
     <div class="aqi-value" id="aqiValue"></div>

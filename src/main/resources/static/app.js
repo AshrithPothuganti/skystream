@@ -61,32 +61,35 @@ async function loadWeather(city) {
     lastCity = city;
 
     const res = await fetch(API_CURRENT + encodeURIComponent(city));
-    let data = await res.json();
+    const data = await res.json();
 
-    const cur = data.current ?? data;
-    const loc = data.location ?? { name: city };
+    // Unified DTO fields
+    locationDisplay.textContent = data.city ?? city;
+    bigTemp.textContent = fmtTemp(data.temperature);
+    bigCond.textContent = data.condition ?? "---";
 
-    const temp = cur.temp_c ?? cur.temperature;
-    const condition = cur.condition?.text ?? cur.condition ?? "Clear";
-    const icon = cur.condition?.icon;
-
-    // UI
-    locationDisplay.textContent = loc.name;
-    bigTemp.textContent = fmtTemp(temp);
-    bigCond.textContent = condition;
-
-    if (icon) {
-        bigIcon.src = icon.startsWith("http") ? icon : "https:" + icon;
+    if (data.icon) {
+        bigIcon.src = data.icon.startsWith("https")
+            ? data.icon
+            : "https:" + data.icon;
     }
 
-    metaHum.textContent = cur.humidity ?? "--";
-    metaWind.textContent = (cur.wind_kph ?? cur.wind ?? "--") + " km/h";
+    metaHum.textContent = data.humidity ?? "--";
+    metaWind.textContent = (data.wind ?? "--") + " km/h";
 
-    defaultCityEl.textContent = `${loc.name} — ${fmtTemp(temp)} | ${condition}`;
+    defaultCityEl.textContent =
+        `${data.city} — ${fmtTemp(data.temperature)} | ${data.condition}`;
 
-    updateBackground(condition);
+    sunriseTime.textContent = data.sunrise ?? "--";
+    sunsetTime.textContent = data.sunset ?? "--";
 
+    if (data.aqi != null) {
+        renderAirQuality(data.aqi);
+    }
+
+    updateBackground(data.condition);
 }
+
 
 // -------------------------
 // LOAD FORECAST (10-day)
@@ -94,6 +97,8 @@ async function loadWeather(city) {
 async function loadForecast(city) {
     const res = await fetch(API_FORECAST + encodeURIComponent(city));
     const data = await res.json();
+
+    
 
     const days = data?.forecast?.forecastday ?? [];
 
@@ -129,7 +134,10 @@ async function loadForecast(city) {
     sunriseTime.textContent = days[0]?.astro?.sunrise ?? "--";
     sunsetTime.textContent = days[0]?.astro?.sunset ?? "--";
 
-    updateSunSlider(days[0]?.astro);
+    const localTime = data.location?.localtime;
+updateSunSlider(days[0]?.astro, localTime);
+
+    
 
 const tips = generateLifestyleTips({
     uv: data.current.uv,
@@ -147,23 +155,55 @@ renderLifestyleTips(tips);
 // -------------------------
 // SUN PROGRESS
 // -------------------------
-function updateSunSlider(astro) {
+function updateSunSlider(astro, localTimeStr) {
     if (!astro) return;
 
-    const now = new Date();
+    const now = new Date(localTimeStr.replace(" ", "T"));
     const today = now.toDateString();
 
-    let sunrise = new Date(`${today} ${astro.sunrise}`);
-    let sunset = new Date(`${today} ${astro.sunset}`);
+    const sunrise = new Date(`${today} ${astro.sunrise}`);
+    const sunset = new Date(`${today} ${astro.sunset}`);
+    const nextSunrise = new Date(sunrise.getTime() + 24 * 60 * 60 * 1000);
 
-    if (isNaN(sunrise)) sunrise = now;
-    if (isNaN(sunset)) sunset = now;
+    if (isNaN(sunrise) || isNaN(sunset)) return;
 
-    let pct = ((now - sunrise) / (sunset - sunrise)) * 100;
-    pct = Math.max(0, Math.min(100, pct));
+    const sunIcon = document.getElementById("sunIcon");
+    const moonIcon = document.getElementById("moonIcon");
+    const sunFill = document.getElementById("sunFill");
+    const moonFill = document.getElementById("moonFill");
 
-    sunProgress.value = pct;
+    // ☀️ DAYTIME
+    if (now >= sunrise && now <= sunset) {
+        let pct = ((now - sunrise) / (sunset - sunrise)) * 100;
+        pct = Math.max(0, Math.min(100, pct));
+
+        sunFill.style.width = pct + "%";
+        moonFill.style.display = "none";
+
+        sunIcon.style.left = pct + "%";
+        sunIcon.style.display = "block";
+        moonIcon.style.display = "none";
+    }
+
+    // 🌙 NIGHTTIME
+    else {
+        let nightStart = sunset;
+        let nightEnd = now < sunrise ? sunrise : nextSunrise;
+
+        let pct = ((now - nightStart) / (nightEnd - nightStart)) * 100;
+        pct = Math.max(0, Math.min(100, pct));
+
+        moonFill.style.display = "block";
+        moonFill.style.width = pct + "%";
+
+        moonIcon.style.left = pct + "%";
+        moonIcon.style.display = "block";
+
+        sunIcon.style.display = "none";
+        sunFill.style.width = "0%";
+    }
 }
+
 
 // -------------------------
 // SEARCH BUTTON

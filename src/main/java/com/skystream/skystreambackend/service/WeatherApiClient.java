@@ -19,7 +19,7 @@ public class WeatherApiClient {
     @Value("${weather.api.key}")
     private String apiKey;
 
-    private static final String BASE = "http://api.weatherapi.com/v1";
+    private static final String BASE = "https://api.weatherapi.com/v1";
 
     // -------------------------------------------------------------------------
     // HELPERS
@@ -98,7 +98,10 @@ public List<Map<String, Object>> searchCitiesTyped(String q) {
                 .queryParam("q", q)
                 .toUriString();
 
+        System.out.println("WeatherAPI SEARCH URL = " + url);
+
         String json = rest.getForObject(url, String.class);
+        System.out.println("WeatherAPI RAW RESPONSE = " + json);
 
         return mapper.readValue(
                 json,
@@ -106,7 +109,8 @@ public List<Map<String, Object>> searchCitiesTyped(String q) {
         );
 
     } catch (Exception ex) {
-        return List.of();  // return empty list on failure
+        ex.printStackTrace();   // 👈 THIS IS CRITICAL
+        return List.of();
     }
 }
 

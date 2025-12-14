@@ -168,71 +168,68 @@ body {
     border-radius:12px;
 }
 
-/* Sun */
+/* =========================
+   SUN PROGRESS
+   ========================= */
+
 #sunProgress {
-    width:120px;
-}
-
-.sun-wrapper {
-    position: relative;
     width: 100%;
 }
 
-.sun-range {
-    width: 100%;
-    height: 6px;
-    border-radius: 4px;
-    appearance: none;
-    background: linear-gradient(to right, #ffdd66, #ffb300);
-}
-
-.sun-range.night {
-    background: linear-gradient(to right, #4a4a4a, #222);
-}
-
-.sun-icon {
-    width: 28px;
-    position: absolute;
-    top: -12px;
-    transform: translateX(-50%);
-    transition: left 0.3s ease;
-}
-
-.sun-icon.night {
-    filter: brightness(0.7);
-}
-
+/* Container */
 .sun-track {
     position: relative;
     width: 100%;
+    height: 36px;
+    margin: 8px 0;
 }
+
+/* Range bar */
 .sun-bar {
     position: relative;
     height: 6px;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+}
 
+/* Filled portion */
 .sun-fill {
     position: absolute;
     height: 100%;
     background: linear-gradient(90deg, #ffd966, #ffae00);
     border-radius: 6px;
+    transition: width 0.6s ease;
     width: 0%;
 }
 
-#sunIcon {
+.moon-fill {
     position: absolute;
-    top: -14px;
-    width: 28px;
-    transition: left 0.6s ease;
+    height: 100%;
+    background: linear-gradient(90deg, #9aa4ff, #cfd6ff);
+    width: 0%;
+    display: none;
+    transition: width 0.6s ease;
 }
 
+
+/* Sun icon */
+#sunIcon,
+#moonIcon {
+    position: absolute; 
+    top: -10px;
+    width: 26px;
+    transition: left 0.6s ease, opacity 0.4s ease;
 }
 
-#sunIcon.night {
+#moonIcon {
+    display: none;
     filter: brightness(0.9);
 }
-
+/* Night mode */
+#sunIcon.night {
+    filter: brightness(0.8);
+}
 
 /* MOBILE */
 @media(max-width:900px) {
@@ -264,7 +261,7 @@ body {
 
 .aqi-pointer {
     position: absolute;
-    top: -6px;
+    top: -2px;
     width: 14px;
     height: 14px;
     background: white;
@@ -290,7 +287,7 @@ body {
     justify-content: flex-start;
 
     padding: 22px;
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(8px);
     border-radius: 12px;
 
