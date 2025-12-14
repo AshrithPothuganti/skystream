@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ public class WeatherController {
     private final WeatherFailoverService failoverService;
     private final WeatherMapper mapper;
     private final WeatherApiClient api;
-    private final FuzzySearchService fuzzy;
     private final IPLocationService ipService;
 
     // ✅ SINGLE constructor, ALL dependencies injected safely
@@ -27,13 +25,11 @@ public class WeatherController {
             WeatherFailoverService failoverService,
             WeatherMapper mapper,
             WeatherApiClient api,
-            FuzzySearchService fuzzy,
             IPLocationService ipService
     ) {
         this.failoverService = failoverService;
         this.mapper = mapper;
         this.api = api;
-        this.fuzzy = fuzzy;
         this.ipService = ipService;
     }
 
