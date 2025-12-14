@@ -23,14 +23,11 @@ public class LocalCSVLoaderService {
     private final List<Map<String, String>> globalData = new ArrayList<>();
     private final List<Map<String, String>> dailyData = new ArrayList<>();
 
+    private static final int MAX_ROWS = 1000;
+
     @PostConstruct
     public void init() {
-        System.out.println("===== CSV FALLBACK LOADER START =====");
-
-        loadCsv(globalPath, globalData, "Global");
-        loadCsv(dailyPath, dailyData, "Daily");
-
-        System.out.println("===== CSV FALLBACK LOADER END =====");
+        System.out.println("CSV loader initialized (lazy mode)");
     }
 
     private void loadCsv(String path,
@@ -54,7 +51,11 @@ public class LocalCSVLoaderService {
                 String[] headers = headerLine.split(",");
 
                 String line;
+                int count = 0;
+
                 while ((line = br.readLine()) != null) {
+                    if (count >= MAX_ROWS) break;
+
                     String[] values = line.split(",", -1);
                     Map<String, String> row = new HashMap<>();
 
@@ -63,6 +64,7 @@ public class LocalCSVLoaderService {
                     }
 
                     target.add(row);
+                    count++;
                 }
             }
 
@@ -74,10 +76,16 @@ public class LocalCSVLoaderService {
     }
 
     public List<Map<String, String>> getGlobalData() {
+        if (globalData.isEmpty()) {
+            loadCsv(globalPath, globalData, "Global");
+        }
         return globalData;
     }
 
     public List<Map<String, String>> getDailyData() {
+        if (dailyData.isEmpty()) {
+            loadCsv(dailyPath, dailyData, "Daily");
+        }
         return dailyData;
     }
 }
