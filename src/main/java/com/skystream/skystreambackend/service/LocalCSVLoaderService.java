@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;  // <-- FIXED
+import jakarta.annotation.PostConstruct;
+  // <-- FIXED
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
