@@ -32,13 +32,17 @@ public class WeatherService {
     // Keep a set of canonical city names for suggestions
     private final Set<String> canonicalCities = Collections.synchronizedSet(new HashSet<>());
 
-    @PostConstruct
-    public void init() {
-        loadAllCsvs();
-        System.out.println("WeatherService initialized. Cities indexed: " + canonicalCities.size());
+   @PostConstruct
+public void init() {
+    try {
+        loadCsv();
+    } catch (Exception e) {
+        System.err.println("WeatherService init failed: " + e.getMessage());
     }
+}
 
-    private void loadAllCsvs() {
+
+    private void loadCsv() {
         try {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
             // finds every CSV file under resources/data (recursive)
