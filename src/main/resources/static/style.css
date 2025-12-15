@@ -272,9 +272,9 @@ body {
 
 
 .lifestyle-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(200px, 1fr)) !important;
-    gap: 20px !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
     width: 100%;
     margin-top: 20px;
 }
@@ -324,3 +324,17 @@ body {
     margin-top: auto;
 }
 
+
+/* Tablet */
+@media (max-width: 900px) {
+    .lifestyle-grid {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .lifestyle-grid {
+        grid-template-columns: 1fr;
+    }
+}
